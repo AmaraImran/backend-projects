@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DashBoard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: rgb(125, 171, 171);
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #url {
+      outline: none;
+      border-radius: 5px;
+      border: none;
+      width: 50vw;
+      height: 40px;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    .btn {
+      padding: 15px;
+      border: none;
+      margin-left: 5px;
+      background-color: rgb(37, 63, 76);
+      color: white;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .generated-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Link Shortener</h1>
+<div></div>
+  <form action="/url/" method="post">
+    <input type="text" name="url" id="url" placeholder="Paste your URL" />
+    <button type="submit" class="btn">Generate</button>
+  </form>
+
+  <% if (locals.id) { %>
+    <p class="generated-link">
+      Your Generated URL:
+      <a href="http://localhost:3000/url/<%= id %>">http://localhost:3000/url/<%= id %></a>
+    </p>
+  <% } %>
+ 
+</body>
+</html>
