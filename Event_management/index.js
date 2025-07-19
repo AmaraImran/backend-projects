@@ -1,6 +1,10 @@
 const express=require("express")
 const app=express()
-
+const adminRoutes=require("./routes/admin")
+const connection=require('./connection')
+app.use(express.json())
+connection.connectTodatabase("mongodb://localhost:27017/event-management").then(()=>console.log("connected to db"))
+app.use("/admin",adminRoutes)
 app.listen(3000,()=>{
     console.log("server is running on port 3000")
 })
