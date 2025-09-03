@@ -1,19 +1,18 @@
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser"); // make sure you're using this in app.js
 
 module.exports = function (req, res, next) {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies.token;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
+  if (!token) {
+    return res.status(401).send("Access denied. No token provided.");
   }
 
-  const token = authHeader.split(" ")[1];
-
   try {
-    const decoded = jwt.verify(token,"SECRETKEY");
-    req.user = decoded; // ✅ This makes req.user.id available
+    const decoded = jwt.verify(token, "SECRETKEY"); // Replace with process.env.JWT_SECRET in production
+    req.user = decoded; // e.g., { id: ..., iat: ..., exp: ... }
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Invalid or expired token" });
+    return res.status(401).send("Invalid or expired token.");
   }
 };

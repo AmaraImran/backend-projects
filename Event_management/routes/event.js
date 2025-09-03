@@ -1,9 +1,9 @@
 const express=require("express")
 const { addEvent, viewEvent, updateEvent, deleteEvent } = require("../controllers/event")
 const verifyToken=require("../middlewares/auth")
-
+const upload=require("../middlewares/upload")
 const router=express.Router()
-router.post("/",verifyToken,addEvent)
+router.post("/",verifyToken,upload.single("image"),addEvent)
 router.get("/",viewEvent)
 router.put("/:id",verifyToken,updateEvent)
 router.delete("/:id",verifyToken,deleteEvent)

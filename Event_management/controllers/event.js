@@ -1,7 +1,9 @@
 const eventSchema=require("../models/event")
+const multer = require("multer");
+const upload=multer({dest:'uploads/'})
 exports.addEvent=async(req,res)=>{
-  const { title, description, date, location, image } = req.body;
-
+  const { title, description, date, location } = req.body;
+ const image = req.file ? `/uploads/${req.file.filename}` : "";
   if (!title || !description || !date || !location) {
     return res.status(400).json({ message: "Please fill all required fields" });
   }
@@ -27,11 +29,12 @@ exports.addEvent=async(req,res)=>{
 }
 exports.viewEvent=async(req,res)=>{
 const events=await eventSchema.find({})
-res.status(201).json({events})
+res.render("dashboard", { events })
 }
 exports.updateEvent=async(req,res)=>{
      const eventId = req.params.id;
      const { title, description, date, location, image } = req.body;
+      
      try {
         const event=await eventSchema.findById(eventId)
         if(!event) res.status(401).json("Event Not Found!")

@@ -1,4 +1,5 @@
 const adminmodel = require("../models/admin");
+const eventModel=require("../models/event")
 const bcrypt = require("bcrypt");
 const jwt=require("jsonwebtoken")
 exports.RegisterAdmin = async (req, res) => {
@@ -31,6 +32,7 @@ exports.RegisterAdmin = async (req, res) => {
 };
 exports.Login=async(req,res)=>{
     const{email,password}=req.body
+    const events = await eventModel.find({});
     if(!email||!password) return res.json("can't be empty!")
        const admin=await adminmodel.findOne({email})
     if(!admin) return res.status(401).json("invalid email or password")
@@ -41,11 +43,13 @@ const ismatch=bcrypt.compare(password,admin.password)
      email: admin.email
 
 },"SECRETKEY");
-res.status(200).json({
-    token,
-    email:admin.email,
-    fullname:admin.fullname
-})
-
+// res.status(200).json({
+//     token,
+//     email:admin.email,
+//     fullname:admin.fullname
+// })
+res.cookie("token", token)
+    res.render("dashboard", { events });
+    
     
 }
